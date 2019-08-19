@@ -1,0 +1,54 @@
+{
+  "from": 0,
+  "size": 0,
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "multi_match": {
+                "query": "supervisor",
+                "fields": [
+                  "*_globalsearch_primary^5.0",
+                  "*_numbercolumn^10.0",
+                  "_all^5.0",
+                  "details.*.text^5.0"
+                ],
+                "type": "cross_fields",
+                "operator": "AND",
+                "slop": 0,
+                "prefix_length": 0,
+                "max_expansions": 50,
+                "minimum_should_match": "40%",
+                "boost": 1
+              }
+            }
+          ],
+          "adjust_pure_negative": true,
+          "boost": 1
+        }
+      },
+      "functions": [],
+      "score_mode": "multiply",
+      "max_boost": 3.4028235e+38,
+      "boost": 1
+    }
+  },
+  "aggregations": {
+    "group_by_state": {
+      "terms": {
+        "field": "_type",
+        "size": 100,
+        "min_doc_count": 1,
+        "shard_min_doc_count": 0,
+        "show_term_doc_count_error": false,
+        "order": [
+          {
+            "_count": "desc"
+          }
+        ]
+      }
+    }
+  }
+}
