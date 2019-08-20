@@ -78,12 +78,15 @@ async function run() {
 			if (docs.length === bulkSize) {
 				await bulkToEs(docs);
 				docs = [];
-				console.log("bulk success: " + count / FakeDocCount * 100 + "%");
+				//console.log("bulk success: " + (count / FakeDocCount * 100).toFixed(2) + "%");
 			}
 		}
 		await bulkToEs(docs);
 		console.log("bulk total documents: " + count);
 	}
+	return Promise.resolve(count);
 }
 
-Promise.resolve(run());
+module.exports = run;
+
+//Promise.resolve(run());

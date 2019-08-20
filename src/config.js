@@ -9,7 +9,8 @@ module.exports = {
 	EsIndexName: 'stkachenko',
 	EsLogin: 'user',
 	EsPassword: 'password',
-	FakeDocCount: 800 * 1000,
+	FakeDocCount: 1 * 1000,
+	SearchSamples: 100,
 	EsTypes: {
 		Contact: {
 			"contact_name_globalsearch_primary": NAME,

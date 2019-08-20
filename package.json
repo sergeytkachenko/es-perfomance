@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "bulk": "node src/bulk.js",
     "search": "node src/search.js"
   },

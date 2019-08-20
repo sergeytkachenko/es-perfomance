@@ -1,0 +1,103 @@
+{
+  "mappings": {
+    "_default_": {
+      "dynamic_templates": [
+        {
+          "notanalyzed": {
+            "match_pattern": "regex",
+            "match":  "^id|.*_id|.*_image|tags|type|@timestamp|@version$",
+            "mapping": {
+              "index": "not_analyzed",
+              "include_in_all": false
+            }
+          }
+        },
+        {
+          "default_bpm_mapping": {
+            "match_mapping_type": "string",
+            "unmatch": "*_numbercolumn",
+            "mapping": {
+              "analyzer": "bpmV2",
+              "search_analyzer": "bpmV2"
+            }
+          }
+        },
+        {
+          "bpm_numbers": {
+            "match": "*_numbercolumn",
+            "mapping": {
+              "analyzer": "bpm_numbers",
+              "search_analyzer": "bpm_numbers"
+            }
+          }
+        }
+      ],
+      "_all": {
+        "type": "string",
+        "analyzer": "bpmV2",
+        "search_analyzer": "bpmV2"
+      }
+    }
+  },
+  "settings": {
+    "index" : {
+      "number_of_shards" : 8,
+      "number_of_replicas" : 1
+    },
+    "analysis": {
+      "char_filter": {
+        "numbers_filter": {
+          "type": "pattern_replace",
+          "pattern": "[^0-9]",
+          "replacement": ""
+        }
+      },
+      "filter": {
+        "stopwords_ru": {
+          "type": "stop",
+          "stopwords": "_russian_",
+          "ignore_case": true
+        },
+        "stopwords_en": {
+          "type": "stop",
+          "stopwords": "_english_",
+          "ignore_case": true
+        }
+      },
+      "tokenizer": {
+        "nGram": {
+          "type": "nGram",
+          "min_gram": 2,
+          "max_gram": 20,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      },
+      "analyzer": {
+        "bpmV2": {
+          "type": "custom",
+          "tokenizer": "nGram",
+          "filter":   [
+            "stopwords_ru",
+            "stopwords_en",
+            "lowercase",
+            "russian_morphology",
+            "english_morphology"
+          ],
+          "char_filter": [
+            "html_strip"
+          ]
+        },
+        "bpm_numbers": {
+          "type": "custom",
+          "tokenizer": "nGram",
+          "char_filter": [
+            "numbers_filter"
+          ]
+        }
+      }
+    }
+  }
+}

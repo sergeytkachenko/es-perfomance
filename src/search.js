@@ -1,19 +1,12 @@
-const { EsIndexName } = require('./config');
+const { EsIndexName, SearchSamples } = require('./config');
 const esClient = require('./es-client');
 const searchQuery = require('./search-query-es5');
 const faker = require('faker');
 faker.locale = "ru";
 
-async function search() {
-	return esClient.search({
-		body: searchQuery,
-		index: EsIndexName
-	}).then(res => res.took);
-}
-
 async function searches() {
 	let totalMs = 0;
-	const steps = 3000;
+	const steps = SearchSamples;
 	for(let i = 0; i < steps; i++) {
 		try {
 			const q = faker.random.words();
@@ -23,17 +16,19 @@ async function searches() {
 				index: EsIndexName
 			});
 			totalMs += response.took;
-			console.log(i / steps * 100 + "%, totalMs: " + totalMs / i);
+			//console.log(i / steps * 100 + "%, totalMs: " + (totalMs / i).toFixed(2));
 		} catch (e) {
 			console.error(e);
 		}
 	}
-	return totalMs / steps;
+	return (totalMs / steps).toFixed(2);
 }
 
-Promise
-	.resolve(searches())
-	.then((totalMs) => {
-		console.log(`totalMs: ${totalMs} ms`);
-	});
+module.exports = searches;
+//
+// Promise
+// 	.resolve(searches())
+// 	.then((totalMs) => {
+// 		console.log(`totalMs: ${totalMs} ms`);
+// 	});
 
