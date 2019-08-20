@@ -11,7 +11,7 @@ const {
 async function bulkToEs(table = []) {
 	const stepTable = table;
 	if (stepTable.length === 0) {
-		console.log('end of data');
+		//console.log('end of data');
 		return Promise.resolve(false);
 	}
 	const body = [];
@@ -31,7 +31,7 @@ async function bulkToEs(table = []) {
 		}
 		body.push(_doc);
 	});
-	console.log('start bulk data: ' + stepTable.length);
+	//console.log('start bulk data: ' + stepTable.length);
 	return esClient
 		.bulk({ body: body })
 		.then(() => {
@@ -82,7 +82,7 @@ async function run() {
 			}
 		}
 		await bulkToEs(docs);
-		console.log("bulk total documents: " + count);
+		//console.log("bulk total documents: " + count);
 	}
 	return Promise.resolve(count);
 }
