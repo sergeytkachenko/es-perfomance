@@ -14,7 +14,7 @@ ngram_3-20.json
 
 ### build && run
 ```
-docker build es-perfomance -t .
+docker build -t es-perfomance .
 docker run -d --name es-perfomance --network host es-perfomance
 docker logs es-perfomance | grep -e RESULT -e indexation
 ```
