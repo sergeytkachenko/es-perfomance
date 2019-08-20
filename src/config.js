@@ -5,12 +5,12 @@ const {
 } = require('./fake-types');
 
 module.exports = {
-	EsHost: 'http://ru1-es-bpm.bpmonline.com:9201',
+	EsHost: process.env.ES_HOST || 'http://167.71.140.143:9200',
 	EsIndexName: 'stkachenko',
 	EsLogin: 'user',
 	EsPassword: 'password',
-	FakeDocCount: 1 * 1000,
-	SearchSamples: 100,
+	FakeDocCount: process.env.FAKE_DOC_COUNT || 1400 * 1000,
+	SearchSamples: process.env.SEARCH_SAMPLES || 1000,
 	EsTypes: {
 		Contact: {
 			"contact_name_globalsearch_primary": NAME,

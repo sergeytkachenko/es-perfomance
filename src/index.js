@@ -24,7 +24,7 @@ function readFiles(dirname) {
 function deleteIndex() {
 	return esClient.indices.delete({
 		index: EsIndexName
-	}).then(() => console.log('delete index ' + EsIndexName));
+	}).then(() => console.log('delete index ' + EsIndexName)).catch(e => console.error(e));
 }
 
 function createIndex(templateMapping) {
