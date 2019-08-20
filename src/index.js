@@ -34,6 +34,13 @@ function createIndex(templateMapping) {
 	}).then(() => console.log('create index ' + EsIndexName));
 }
 
+function catIndex() {
+	return esClient.indices.stats({
+		index: EsIndexName,
+		format: "json"
+	}).then((data) => data._all.total.store.size_in_bytes);
+}
+
 async function run() {
 	const files = await readFiles('src/templates/');
 	for (let i = 0; i < files.length; i++) {
@@ -44,7 +51,9 @@ async function run() {
 		const totalBulk = await bulk();
 		const end = new Date();
 		const totalSearchMs = await search();
-		console.log(`RESULT: filename: ${filename}, totalBulk: ${totalBulk}, totalSearchMs: ${totalSearchMs}, indexationMs: ${end - start}`);
+		const totalSize = await catIndex();
+		console.log(`RESULT: filename: ${filename}, totalBulk: ${totalBulk}, totalSearchMs: ${totalSearchMs},
+		 indexationMs: ${end - start}, totalSize: ${totalSize / 1024 / 1024} mb`);
 	}
 }
 
