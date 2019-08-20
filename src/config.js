@@ -6,7 +6,7 @@ const {
 
 module.exports = {
 	EsHost: process.env.ES_HOST || 'http://167.71.140.143:9200',
-	EsIndexName: 'stkachenko',
+	EsIndexName: 'performance',
 	EsLogin: 'user',
 	EsPassword: 'password',
 	FakeDocCount: process.env.FAKE_DOC_COUNT || 1400 * 1000,
