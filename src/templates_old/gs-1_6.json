@@ -5,7 +5,7 @@
         {
           "notanalyzed": {
             "match_pattern": "regex",
-            "match":  "^id|.*_id|.*_image|tags|type|@timestamp|@version$",
+            "match": "^id|.*_id|.*_image|tags|type|@timestamp|@version$",
             "mapping": {
               "index": "not_analyzed",
               "include_in_all": false
@@ -13,12 +13,20 @@
           }
         },
         {
-          "default_bpm_mapping": {
-            "match_mapping_type": "string",
-            "unmatch": "*_numbercolumn",
+          "bpm_primaries": {
+            "match": "*_globalsearch_primary",
             "mapping": {
-              "analyzer": "bpmV2",
-              "search_analyzer": "bpmV2"
+              "analyzer": "bpm_text_min2symbols",
+              "search_analyzer": "bpm_text_min2symbols"
+            }
+          }
+        },
+        {
+          "bpm_communication_text": {
+            "path_match": "details.*.text",
+            "mapping": {
+              "analyzer": "bpm_text_min2symbols",
+              "search_analyzer": "bpm_text_min2symbols"
             }
           }
         },
@@ -28,6 +36,15 @@
             "mapping": {
               "analyzer": "bpm_numbers",
               "search_analyzer": "bpm_numbers"
+            }
+          }
+        },
+        {
+          "default_bpm_mapping": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "analyzer": "bpmV2",
+              "search_analyzer": "bpmV2"
             }
           }
         }
@@ -68,7 +85,16 @@
         "nGram": {
           "type": "nGram",
           "min_gram": 3,
-          "max_gram": 4,
+          "max_gram": 20,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        },
+        "nGram_min2": {
+          "type": "nGram",
+          "min_gram": 2,
+          "max_gram": 20,
           "token_chars": [
             "letter",
             "digit"
@@ -79,7 +105,21 @@
         "bpmV2": {
           "type": "custom",
           "tokenizer": "nGram",
-          "filter":   [
+          "filter": [
+            "stopwords_ru",
+            "stopwords_en",
+            "lowercase",
+            "russian_morphology",
+            "english_morphology"
+          ],
+          "char_filter": [
+            "html_strip"
+          ]
+        },
+        "bpm_text_min2symbols": {
+          "type": "custom",
+          "tokenizer": "nGram_min2",
+          "filter": [
             "stopwords_ru",
             "stopwords_en",
             "lowercase",
