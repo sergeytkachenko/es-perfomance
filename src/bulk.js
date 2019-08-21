@@ -46,20 +46,22 @@ function fakeDoc(type) {
 		_type: type,
 		_index: EsIndexName
 	};
-	for (let [field, fieldType] of Object.entries(esType)) {
-		let fakeValue;
-		switch(fieldType) {
-			case NAME:
-				fakeValue = faker.random.words();
-				break;
-			case ADDRESS:
-				fakeValue = faker.random.words();
-				break;
-			case EMAIL:
-				fakeValue = faker.internet.email();
-				break;
+	for (let field in esType) {
+		if(esType.hasOwnProperty(field)) {
+			let fakeValue;
+			switch(esType[field]) {
+				case NAME:
+					fakeValue = faker.random.words();
+					break;
+				case ADDRESS:
+					fakeValue = faker.random.words();
+					break;
+				case EMAIL:
+					fakeValue = faker.internet.email();
+					break;
+			}
+			doc[field] = fakeValue;
 		}
-		doc[field] = fakeValue;
 	}
 	return doc;
 }
